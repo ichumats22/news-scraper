@@ -1,5 +1,5 @@
 body { 
-  background-color: #F2F6D0 
+  background-color: #ABFFEA; 
 }
 .container {
   width: 960px;
@@ -7,6 +7,12 @@ body {
   margin-right: auto;
   padding-top: 5%;
 }
+
+#articleButtons {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 #articles {
   display: inline-block;
   overflow: auto;
@@ -29,4 +35,17 @@ textarea {
 
 .articleNoteDiv {
   margin-top: 10px;
+}
+
+.articleNoteHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteNoteBtn {
+  display: flex;
+  align-self: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 2px 4px 2px 4px;
 }

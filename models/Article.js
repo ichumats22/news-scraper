@@ -14,7 +14,8 @@ var ArticleSchema = new Schema({
   //'link' is required and of type String
   link: {
     type: String, 
-    required: true
+    required: true,
+    unique: true
   },
   //'note is an object that stores a Note id
   note: {

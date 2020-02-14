@@ -4,6 +4,7 @@
     <meta charset='UTF-8'>
     <title>News Scraper</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/bf3fcc460f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href='./style.css' type='text/css' />
   </head>
 
@@ -11,29 +12,57 @@
     <div class='container'>
 
       <div class='row'>
+
         <div class='col-12'>
-          <h1>Note Scraper</h1>
-        </div><!--end of row one col one div-->
-      </div><!--end of row one div-->
+          <h1>News Scraper</h1>
+        </div><!--end of col one div-->
+
+      </div><!--end of row  div-->
 
       <div class='row'> 
-        <div class='col-6' id='articles'>
 
-        </div><!--end of row two col one div-->
+        <div class='col-6'>
+
+          <div class='row'>
+
+            <div class='col' id='articleButtons'>
+              <button id='refresh'>
+                <i class="fas fa-sync"></i> Refresh Articles
+              </button>
+              <button id='clear'>
+                <i class="fas fa-times"></i> Clear Articles
+              </button>
+            </div><!--end of subcol div-->
+
+          </div><!--end of subrow div-->
+
+          <div class='row'> 
+
+            <div class='col' id='articles'>
+
+            </div><!--end of subcol div-->
+
+          </div><!--end of subrow div-->
+
+        </div><!--end of col div-->
+
         <div class='col-6'>
           <div class='row'>
             <div class='col' id='addANote'> 
 
-            </div>
-          </div><!--end of row two col two subrow one div (add a note)-->
+            </div><!--end of subcol div-->
+          </div><!--end of subrow div (add a note)-->
+
           <div class='row'>
             <div class='col' id='existingNotes'>
 
-            </div>
-          </div><!--end of row two col two subrow two div (existing notes)-->
-        </div><!--end of row two col two div-->
-      </div><!--end of row two div-->
-    </div>
+            </div><!--end of subcol div-->
+          </div><!--end of subrow div (existing notes)-->
+        </div><!--end of col div-->
+
+      </div><!--end of row div-->
+
+    </div><!--end of container div-->
 
     <!--jQuery-->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>

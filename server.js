@@ -101,5 +101,12 @@ app.post("/articles/:id", (req, res) =>
   .catch(err => res.json(err))
 );
 
+app.put("/notes/delete/:id", (req, res) => {
+  console.log(req.params.id)
+  db.Note.remove({ _id: req.params.id}, (err, data) => err ? console.log(err) : res.json(data)).then();
+}
+  //db.Notes.deleteOne({_id: mongojs.ObjectId(req.params._id)})
+)
+
 // Start the server
 app.listen(PORT, () => console.log("App running on port " + PORT + "!"));

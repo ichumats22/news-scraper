@@ -2,10 +2,61 @@ var selected;
 //Grab the articles as a JSON
 $.getJSON('/articles', data => {
   //For each article
-  for (var i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     //Display the appropriate information on the page
     $('#articles').append(`<p data-id='${data[i]._id}'>${data[i].title}<br />${data[i].link}</p>`);
   };
+});
+
+const clearAllDivs = () => {
+  $('#articles').empty(),
+  $('#addANote').empty(),
+  $('#existingNotes').empty()
+}
+
+const createNoteInput = (input) => {
+  //The title of the article
+  $('#addANote').append(`<h2>${input.title}</h2>`);
+  //An input to enter a new note title
+  $('#addANote').append('<input id="titleInput" name="title">');
+  //A textarea to add a new note body
+  $('#addANote').append('<textarea id="bodyInput" name="body"></textarea>');
+  //A button to submit a new note, with the id of the article saved to it 
+  $('#addANote').append(`<button data-id='${input._id}' id='saveNote'>Save Note</button>`);
+}
+
+const createNoteDiv = input => {
+  console.log(input)
+  $(`#existingNotes`).append(
+    `<div class='articleNoteDiv' data-id='${input._id}'> 
+      <div class='articleNoteHeader'> 
+        <h2 class='articleNoteTitle'> ${input.title}</h2> 
+        <button class='deleteNoteBtn' data-id='${input._id}'> <i class='fas fa-times'></i> </button>
+      </div>
+      <div>
+        <p>${input.body}</p>
+      </div>
+    </div>`
+  );
+}
+
+$(document).on('click', '#refresh', () => 
+  $.ajax({
+    method: 'GET',
+    url: `/scrape`
+  })
+  .then(location.reload(true))
+);
+
+$(document).on('click', '#clear', clearAllDivs);
+
+$(document).on('click', '.deleteNoteBtn', function() {
+  let selectedNote = $(this).attr('data-id')
+  console.log(selectedNote)
+  $.ajax({
+    method: 'PUT',
+    url: `/notes/delete/${selectedNote}`
+  }).then()
 });
 
 //Whenever someone clicks a p tag
@@ -24,21 +75,16 @@ $(document).on('click', 'p', function() {
   })
     // With that done, add the note information to the page
     .then(function(data) {
-      console.log(data[0]);
-      console.log(data[0].note)
-      let note = data[0].note
+      console.log(data)
       //If there is a note in the article
-      if (note !== undefined) {
-       $(`#existingNotes`).append(`<div class='articleNoteDiv' data-id='${note._id}'><h2>${note.title}</h2><p>${note.body}</p></div>`);
+      if (data[0].note == undefined || data[0].note == null) {      
+        createNoteInput(data[0])  
+      } else {
+        let notes = data[0].note
+        console.log(notes)   
+        createNoteDiv(notes)
+        createNoteInput(data[0])  
       }
-      //The title of the article
-      $('#addANote').append(`<h2>${data[0].title}</h2>`);
-      //An input to enter a new note title
-      $('#addANote').append('<input id="titleInput" name="title">');
-      //A textarea to add a new note body
-      $('#addANote').append('<textarea id="bodyInput" name="body"></textarea>');
-      //A button to submit a new note, with the id of the article saved to it 
-      $('#addANote').append(`<button data-id='${data[0]._id}' id='saveNote'>Save Note</button>`);
     });
 });
 
@@ -51,6 +97,7 @@ $(document).on("click", "#saveNote", function() {
     method: "POST",
     url: "/articles/" + selected,
     data: {
+      article_id: selected,
       // Value taken from title input
       title: $("#titleInput").val(),
       // Value taken from note textarea
