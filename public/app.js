@@ -4,7 +4,8 @@ $.getJSON('/articles', data => {
   //For each article
   for (let i = 0; i < data.length; i++) {
     //Display the appropriate information on the page
-    $('#articles').append(`<p data-id='${data[i]._id}'>${data[i].title}<br />${data[i].link}</p>`);
+    $('#articles').append(`
+      <a data-id='${data[i]._id}' href='${data[i].link}'><h1>${data[i].title} </h1> <br /><p>${data[i].summary}</p>`);
   };
 });
 

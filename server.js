@@ -51,27 +51,27 @@ app.get("/scrape", (req, res) => {
       let article = {};
 
       article.title = $(element).find("h3").text().trim();
+      article.summary =$(element).find(".hp-item .story-text .teaser").text().trim()
       article.link = $(this).find('a').attr("href");
+      article.dateAdded = Date.now();
 
       results.push(article)
       
       let filteredResult = results.filter(filterAudioFiles);
 
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(filteredResult)
-        // View the added result in the console
-        .then(dbArticle => console.log(dbArticle))
+      db.Article.init().then(() => 
+        db.Article.create(filteredResult, (err, dbArticle) => err ? console.log(err) : console.log(dbArticle)))
         // If an error occurred, log it
-        .catch(err => console.log(err))
+        .catch(error => console.log(error))
+      // Send a message to the client
+      res.send('Scrape Complete');
     });
-    // Send a message to the client
-    res.send('Scrape Complete');
   });
 });
 
 // Route for getting all Articles from the db
 app.get("/articles", (req, res) =>
-  db.Article.find({})
+  db.Article.find({}).sort( { dateAdded: -1 } )
   .then(dbArticle => res.json(dbArticle))
   .catch(err => res.json(err))
 );
@@ -109,4 +109,4 @@ app.put("/notes/delete/:id", (req, res) => {
 )
 
 // Start the server
-app.listen(PORT, () => console.log("App running on port " + PORT + "!"));
+app.listen(PORT, () => console.log(`App running on port ${PORT}!`));
