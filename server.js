@@ -47,12 +47,14 @@ app.get("/scrape", (req, res) => {
     let $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article").each(function(i, element) {
+    $('article').each(function(i, element) {
       let article = {};
 
-      article.title = $(element).find("h3").text().trim();
-      article.summary =$(element).find(".hp-item .story-text .teaser").text().trim()
-      article.link = $(this).find('a').attr("href");
+      article.title = $(element).find('h3').text().trim();
+      article.summary =$(element).find('.hp-item .story-text .teaser').text().trim()
+      article.link = $(this).find('a').attr('href');
+      article.imageLink = $(element).find('img').attr('src');
+      console.log(article.imageLink)
       article.dateAdded = Date.now();
 
       results.push(article)
@@ -62,9 +64,7 @@ app.get("/scrape", (req, res) => {
       db.Article.init().then(() => 
         db.Article.create(filteredResult, (err, dbArticle) => err ? console.log(err) : console.log(dbArticle)))
         // If an error occurred, log it
-        .catch(error => console.log(error))
-      // Send a message to the client
-      res.send('Scrape Complete');
+        .catch(error => error ? console.log(error) : res.send('Scrape Complete'))
     });
   });
 });
@@ -77,14 +77,12 @@ app.get("/articles", (req, res) =>
 );
 
 // Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", (req, res) =>
+app.get("/articles/:id", (req, res) => 
   // Find one article using the req.params.id,
   db.Article.find({_id: mongojs.ObjectId(req.params.id)})
-  // Run the populate method with "note",
-  .populate("note")
-  // Respond with the article and its notes
-  .then(dbArticle => res.json(dbArticle))
-  .catch(err => res.json(err))
+    .populate('note')
+    .then(dbArticle => res.json(dbArticle))
+    .catch(err => res.json(err))
 );
 
 // Route for saving/updating an Article's associated Note

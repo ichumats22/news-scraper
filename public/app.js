@@ -3,9 +3,18 @@ var selected;
 $.getJSON('/articles', data => {
   //For each article
   for (let i = 0; i < data.length; i++) {
+    data[i].imageLink ? image = `<img src='${data[i].imageLink}' class='card-img-top' alt='article-image'></img>` : image = ''
     //Display the appropriate information on the page
     $('#articles').append(`
-      <a data-id='${data[i]._id}' href='${data[i].link}'><h1>${data[i].title} </h1> <br /><p>${data[i].summary}</p>`);
+      <div class='card' data-id='${data[i]._id}'>
+        ${image}
+        <div class='card-body'>
+          <h5 class='card-title'>${data[i].title}</h5>
+          <p class='card-text'>${data[i].summary}</p>
+          <a href='${data[i].link}' class='btn btn-primary'>Go to full article</a>
+        </div>
+      </div>`
+    );
   };
 });
 
@@ -19,9 +28,9 @@ const createNoteInput = (input) => {
   //The title of the article
   $('#addANote').append(`<h2>${input.title}</h2>`);
   //An input to enter a new note title
-  $('#addANote').append('<input id="titleInput" name="title">');
+  $('#addANote').append(`<input id='titleInput' name='title'>`);
   //A textarea to add a new note body
-  $('#addANote').append('<textarea id="bodyInput" name="body"></textarea>');
+  $('#addANote').append(`<textarea id='bodyInput' name='body'></textarea>`);
   //A button to submit a new note, with the id of the article saved to it 
   $('#addANote').append(`<button data-id='${input._id}' id='saveNote'>Save Note</button>`);
 }
@@ -38,7 +47,7 @@ const createNoteDiv = input => {
         <p>${input.body}</p>
       </div>
     </div>`
-  );
+  )
 }
 
 $(document).on('click', '#refresh', () => 
@@ -61,7 +70,7 @@ $(document).on('click', '.deleteNoteBtn', function() {
 });
 
 //Whenever someone clicks a p tag
-$(document).on('click', 'p', function() {
+$(document).on('click', '.card', function() {
   //Empty the notes from the notes section
   $('#addANote').empty();
   $('#existingNotes').empty();
@@ -75,34 +84,33 @@ $(document).on('click', 'p', function() {
     url: `/articles/${selected}`
   })
     // With that done, add the note information to the page
-    .then(function(data) {
+    .then( data  => {
       console.log(data)
       //If there is a note in the article
       if (data[0].note == undefined || data[0].note == null) {      
         createNoteInput(data[0])  
       } else {
-        let notes = data[0].note
-        console.log(notes)   
-        createNoteDiv(notes)
         createNoteInput(data[0])  
+        console.log(data[0].note) 
       }
-    });
+    })
+    .catch(error => console.log(error))
 });
 
 // When you click the savenote button
-$(document).on("click", "#saveNote", function() {
+$(document).on('click', '#saveNote', function() {
   console.log('Save note button clicked')
 
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
-    method: "POST",
-    url: "/articles/" + selected,
+    method: 'POST',
+    url: '/articles/' + selected,
     data: {
       article_id: selected,
       // Value taken from title input
-      title: $("#titleInput").val(),
+      title: $('#titleInput').val(),
       // Value taken from note textarea
-      body: $("#bodyInput").val()
+      body: $('#bodyInput').val()
     }
   })
     // With that done
@@ -110,10 +118,10 @@ $(document).on("click", "#saveNote", function() {
       // Log the response
       console.log(data),
       // Empty the notes section
-      $("#addANote").empty()
+      $('#addANote').empty()
     );
 
   // Also, remove the values entered in the input and textarea for note entry
-  $("#titleInput").val("");
-  $("#bodyInput").val("");
+  $('#titleInput').val('');
+  $('#bodyInput').val('');
 });

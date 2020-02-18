@@ -20,6 +20,10 @@ var ArticleSchema = new Schema({
     type: String, 
     required: true,
   },
+  imageLink: {
+    type: String,
+    required: false
+  },
   dateAdded: {
     type: Date,
     required: true

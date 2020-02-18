@@ -2,7 +2,7 @@ body {
   background-color: #ABFFEA; 
 }
 .container {
-  width: 960px;
+  width: fit-content;
   margin-left: auto;
   margin-right: auto;
   padding-top: 5%;
@@ -17,6 +17,11 @@ body {
   display: inline-block;
   overflow: auto;
   height: 100%;
+}
+
+.card {
+  width: inherit;
+  margin: 1rem
 }
 
 textarea, input {
