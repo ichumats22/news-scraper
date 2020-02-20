@@ -3,7 +3,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const mongojs = require('mongojs');
 require('dotenv').config();
-const PORT = 3000;
+const PORT = process.env.PORT || 80;
 
 //Scraping tools
 const axios = require('axios');
