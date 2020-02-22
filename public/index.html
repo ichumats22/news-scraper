@@ -12,38 +12,30 @@
     <div class='container'>
 
       <div class='row'>
-
-        <div class='col-12'>
-          <h1>News Scraper</h1>
+        <div class='col-12' id='titleDiv'>
+          <h1 class='display-3'>NPR News Scraper</h1>
         </div><!--end of col one div-->
-
       </div><!--end of row  div-->
 
       <div class='row'> 
-
         <div class='col-6'>
-
           <div class='row'>
-
             <div class='col' id='articleButtons'>
-              <button id='refresh'>
+              <button class='btn btn-dark' id='refresh'>
                 <i class="fas fa-sync"></i> Refresh Articles
               </button>
-              <button id='clear'>
+              <button class='btn btn-dark' id='clear'>
                 <i class="fas fa-times"></i> Clear Articles
               </button>
             </div><!--end of subcol div-->
-
           </div><!--end of subrow div-->
-
           <div class='row'> 
-            <div class='col' id='articles'>
+            <div class='col'>
+              <div class='card-deck' id='articles'>
 
+              </div>
             </div>
-
-
           </div><!--end of subrow div-->
-
         </div><!--end of col div-->
 
         <div class='col-6'>
@@ -59,7 +51,6 @@
             </div><!--end of subcol div-->
           </div><!--end of subrow div (existing notes)-->
         </div><!--end of col div-->
-
       </div><!--end of row div-->
 
     </div><!--end of container div-->

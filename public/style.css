@@ -8,6 +8,17 @@ body {
   padding-top: 5%;
 }
 
+#titleDiv {
+  text-align: center;
+  min-height: 150px;
+  background-color: #343a40;
+  color: white;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+  margin-bottom: 15px;
+}
+
 #articleButtons {
   display: flex;
   justify-content: space-evenly;
@@ -24,10 +35,19 @@ body {
   margin: 1rem
 }
 
+#fullArticleBtn {
+  float: right;
+}
+
+.display-4 {
+  font-size: 2.5rem;
+}
+
 textarea, input {
   display: block;
   width: 100%;
-  background-color: #FCF5C7;
+  background-color: #343a40;
+  color: white;
 }
 input {
   height: 36px;
@@ -36,6 +56,7 @@ input {
 textarea {
   height: 200px;
   font-size: 18px;
+  margin: 5px 0 5px 0;
 }
 
 .articleNoteDiv {

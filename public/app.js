@@ -11,7 +11,7 @@ $.getJSON('/articles', data => {
         <div class='card-body'>
           <h5 class='card-title'>${data[i].title}</h5>
           <p class='card-text'>${data[i].summary}</p>
-          <a href='${data[i].link}' class='btn btn-primary'>Go to full article</a>
+          <a href='${data[i].link}' target='_blank' class='btn btn-dark' id='fullArticleBtn'>Go to full article</a>
         </div>
       </div>`
     );
@@ -26,18 +26,18 @@ const clearAllDivs = () => {
 
 const createNoteInput = (input) => {
   //The title of the article
-  $('#addANote').append(`<h2>${input.title}</h2>`);
+  $('#addANote').append(`<h2 class='display-4'>${input.title}</h2>`);
   //An input to enter a new note title
-  $('#addANote').append(`<input id='titleInput' name='title'>`);
+  $('#addANote').append(`<input id='titleInput' name='title' placeholder:'enter note title'>`);
   //A textarea to add a new note body
-  $('#addANote').append(`<textarea id='bodyInput' name='body'></textarea>`);
+  $('#addANote').append(`<textarea id='bodyInput' name='body'></textarea placeholder:'enter note text'>`);
   //A button to submit a new note, with the id of the article saved to it 
-  $('#addANote').append(`<button data-id='${input._id}' id='saveNote'>Save Note</button>`);
+  $('#addANote').append(`<button class='btn btn-dark' data-id='${input._id}' id='saveNote'>Save Note</button>`);
 }
 
 const createNoteDiv = input => {
   console.log(input)
-  $(`#existingNotes`).append(
+  $('#existingNotes').append(
     `<div class='articleNoteDiv' data-id='${input._id}'> 
       <div class='articleNoteHeader'> 
         <h2 class='articleNoteTitle'> ${input.title}</h2> 
@@ -74,7 +74,7 @@ $(document).on('click', '.card', function() {
   //Empty the notes from the notes section
   $('#addANote').empty();
   $('#existingNotes').empty();
-  //Save the id from the p tag
+  //Save the id from the card
   selected = $(this).attr('data-id');
   console.log(selected)
 
@@ -86,12 +86,15 @@ $(document).on('click', '.card', function() {
     // With that done, add the note information to the page
     .then( data  => {
       console.log(data)
-      //If there is a note in the article
-      if (data[0].note == undefined || data[0].note == null) {      
+      //If there is no note in the article
+      if (data[0].note == undefined || data[0].note == null) {   
+        //Create a note input   
         createNoteInput(data[0])  
+      //Otherwise
       } else {
+        //Create a div for each note and a note input
         createNoteInput(data[0])  
-        console.log(data[0].note) 
+        createNoteDiv(data[0].note) 
       }
     })
     .catch(error => console.log(error))
@@ -115,10 +118,7 @@ $(document).on('click', '#saveNote', function() {
   })
     // With that done
     .then(data => 
-      // Log the response
-      console.log(data),
-      // Empty the notes section
-      $('#addANote').empty()
+      createNoteDiv(data)
     );
 
   // Also, remove the values entered in the input and textarea for note entry
